@@ -8,6 +8,7 @@ import android.os.Build
 import io.playfinity.sdk.PFICallback
 import io.playfinity.sdk.PlayfinitySDK
 import io.playfinity.sdk.PlayfinitySDKBuilder
+import io.playfinity.sdk.device.SensorType
 import io.playfinity.sdk.errors.PlayfinityThrowable
 
 class App : Application(), PFICallback {
@@ -39,7 +40,7 @@ class App : Application(), PFICallback {
         PlayfinitySDKBuilder()
                 .enableLogging(BuildConfig.DEBUG)
                 .addCallback(this)
-                .build(this)
+                .build(this, SensorType.Ball)
     }
 
     companion object {
