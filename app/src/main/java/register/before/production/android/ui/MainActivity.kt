@@ -21,19 +21,20 @@ class MainActivity : BaseSensorActivity() {
         setupUi()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
-        recycleSensor()
+        if (isFinishing) {
+            recycleSensor()
+        }
     }
-
 
     //endregion
 
     //region Ui
 
     private fun setupUi() {
-
+        //TODO: Setup UI skin per app flavour.
     }
 
     //endregion
@@ -59,9 +60,7 @@ class MainActivity : BaseSensorActivity() {
     }
 
     private fun recycleSensor() {
-        if (isFinishing) {
-            activeSensor?.unSubscribeEvents(this)
-        }
+        activeSensor?.unSubscribeEvents(this)
     }
 
     //endregion

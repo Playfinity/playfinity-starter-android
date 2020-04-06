@@ -39,7 +39,7 @@ abstract class BaseSensorActivity : AppCompatActivity(),
         super.onResume()
 
         // Start discovering process by checking
-        // location permission and BT availability.
+        // location permission and BTs availability.
         onBleReady()
     }
 
@@ -154,7 +154,7 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
         // Check required scanning permissions.
         if (!canStartBleScanner()) {
-            Timber.v("Cannot start BLE scanner. Has all required permissions: ${hasAllRequiredBlePermissionsAndServices()}")
+            Timber.v("Cannot start BLE scanner.")
             return
         }
 
@@ -172,6 +172,7 @@ abstract class BaseSensorActivity : AppCompatActivity(),
         // Log scanning start.
         Timber.v("Starting BLE scanning...")
 
+        // Start BLE scanning.
         pfiSdk?.getBluetoothManager()
                 ?.run {
                     isScanning = true
@@ -181,9 +182,10 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
     private fun stopBleScanning() {
 
-        // Log scanning start.
+        // Log scanning end.
         Timber.v("BLE scanning stopped.")
 
+        // Stop BLE scanning.
         pfiSdk?.getBluetoothManager()
                 ?.run {
                     isScanning = false
