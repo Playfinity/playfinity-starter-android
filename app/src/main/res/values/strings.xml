@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Playfinity Recorder</string>
+
+    <eat-comment />
+
+    <!-- region Common -->
+
+    <string name="common_no">No</string>
+    <string name="common_yes">Yes</string>
+
+    <!-- endregion -->
+
 </resources>

@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="register.before.production.playfinity.raw">
+<manifest package="register.before.production.android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- region Feature -->
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
+    <!-- endregion -->
+
+    <!-- region Permissions -->
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- endregion -->
+
+    <!-- region Developer -->
+
+    <permission
+        android:name="${applicationId}.permission.DEVELOPER_MODE"
+        android:description="@android:string/ok"
+        android:label="Playfinity Developer Mode"
+        android:permissionGroup="android.permission-group.PLAYFINITY"
+        android:protectionLevel="dangerous" />
+
+    <uses-permission android:name="${applicationId}.permission.DEVELOPER_MODE"/>
+
+    <!-- endregion -->
+
+    <!-- region Application -->
 
     <application
         android:name=".App"
@@ -24,9 +47,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,LockedOrientationActivity">
+
+        <!-- region Application -->
+
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +60,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- endregion -->
+
+        <!-- region Meta -->
 
         <meta-data
             android:name="io.playfinity.sdk.applicationKey"
@@ -45,16 +75,10 @@
             android:name="io.playfinity.sdk.apiUrl"
             android:value="@string/PFI_API_URL" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
+        <!-- endregion -->
 
     </application>
+
+    <!-- endregion -->
 
 </manifest>
