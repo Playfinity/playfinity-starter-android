@@ -24,14 +24,9 @@ class MainActivity : BaseSensorActivity() {
     override fun onStop() {
         super.onStop()
 
-        recycle()
+        recycleSensor()
     }
 
-    private fun recycle() {
-        if (isFinishing) {
-            activeSensor?.let { unSubscribeToSensorEvents(it) }
-        }
-    }
 
     //endregion
 
@@ -50,7 +45,7 @@ class MainActivity : BaseSensorActivity() {
     override fun onSensorDiscovered(sensor: Sensor) {
         activeSensor = sensor
 
-        subscribeToSensorEvents(sensor)
+        setupSensor(sensor)
 
         Timber.d("onSensorDiscovered: ${sensor.givenName}")
     }
@@ -59,16 +54,22 @@ class MainActivity : BaseSensorActivity() {
         Timber.e("onSensorDiscoverError: ${playfinityThrowable.type}")
     }
 
-    override fun onSensorEvent(event: SensorEvent) {
-        Timber.d("onSensorEvent: $event")
-    }
-
-    private fun subscribeToSensorEvents(sensor: Sensor) {
+    private fun setupSensor(sensor: Sensor) {
         sensor.subscribeToEvents(this)
     }
 
-    private fun unSubscribeToSensorEvents(sensor: Sensor) {
-        sensor.unSubscribeEvents(this)
+    private fun recycleSensor() {
+        if (isFinishing) {
+            activeSensor?.unSubscribeEvents(this)
+        }
+    }
+
+    //endregion
+
+    //region Event
+
+    override fun onSensorEvent(event: SensorEvent) {
+        Timber.d("onSensorEvent: $event")
     }
 
     //endregion
