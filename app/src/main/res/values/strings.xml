@@ -7,6 +7,20 @@
     <string name="common_no">No</string>
     <string name="common_yes">Yes</string>
 
+    <string name="label_sdk">Playfinity SDK</string>
+    <string name="label_sdk_connected">Status: Connected</string>
+    <string name="label_sdk_connecting">Status: Connecting…</string>
+    <string name="label_sdk_not_connected">Status: Not connected.</string>
+
+    <string name="label_sensor">Connected Sensor:</string>
+    <string name="label_sensor_name">Name: %1$s</string>
+    <string name="label_sensor_firmware">Firmware: %1$s</string>
+    <string name="label_sensor_mac">MAC: %1$s</string>
+
+    <string name="label_event">Last event</string>
+    <string name="label_event_type">Type: %1$s</string>
+    <string name="label_event_params">Parameters: </string>
+
     <!-- endregion -->
 
 </resources>

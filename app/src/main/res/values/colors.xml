@@ -5,9 +5,15 @@
 
     <!-- region Palette -->
 
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574b</color>
-    <color name="colorAccent">#d81b60</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorAccent">#448AFF</color>
 
     <!-- endregion -->
 

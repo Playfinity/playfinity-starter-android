@@ -90,28 +90,43 @@ abstract class BaseSensorActivity : AppCompatActivity(),
     private var pfiSdk: PlayfinitySDK? = null
 
     private fun observePfiSdk() {
+
+        onPifSdkLoadingStatus(PFI_STATUS_LOADING)
+
         App.getApp(this)
                 .getPfiSdkLiveData()
-                .observe(this, Observer { sdk ->
-                    sdk?.let {
-                        onPifSdkChanged(it)
-                    }
+                .observe(this, Observer {
+                    onPifSdkChanged(it)
                 })
     }
 
-    open fun onPifSdkChanged(sdk: PlayfinitySDK) {
+    private fun onPifSdkChanged(sdk: PlayfinitySDK?) {
         this.pfiSdk = sdk
 
-        // Register sensor discover callback.
-        sdk.getBluetoothManager().addSensorDiscoverListener(this)
+        if (sdk != null) {
 
-        // Start discovering process by checking
-        // location permission and BT availability.
-        onBleReady()
+            // Register sensor discover callback.
+            sdk.getBluetoothManager().addSensorDiscoverListener(this)
 
-        // Log SDK initialize status.
-        Timber.v("Playfinity SDK successfully initialized.")
+            // Start discovering process by checking
+            // location permission and BT availability.
+            onBleReady()
+
+            onPifSdkLoadingStatus(PFI_STATUS_SUCCESS)
+
+            // Log SDK initialize status.
+            Timber.v("Playfinity SDK successfully initialized.")
+
+        } else {
+
+            onPifSdkLoadingStatus(PFI_STATUS_ERROR)
+
+            // Log SDK initialize status.
+            Timber.e("Failed to initialize Playfinity SDK.")
+        }
     }
+
+    abstract fun onPifSdkLoadingStatus(status: Int)
 
     fun clearSensorCache() {
         pfiSdk?.getBluetoothManager()?.clearSensorsCache()
@@ -265,6 +280,10 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
         private const val REQUEST_ENABLE_BT = 1000
         private const val REQUEST_LOCATION_PERMISSION = 2000
+
+        const val PFI_STATUS_LOADING = 1
+        const val PFI_STATUS_SUCCESS = 2
+        const val PFI_STATUS_ERROR = 3
     }
 
     //endregion
