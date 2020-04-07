@@ -1,12 +1,17 @@
 package register.before.production.android.ui
 
+import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import io.playfinity.sdk.PlayfinitySDK
 import io.playfinity.sdk.SensorEvent
@@ -16,6 +21,9 @@ import io.playfinity.sdk.device.SensorEventsSubscriber
 import io.playfinity.sdk.errors.PlayfinityThrowable
 import register.before.production.android.App
 import register.before.production.android.extension.hasAllRequiredBlePermissionsAndServices
+import register.before.production.android.extension.hasLocationPermission
+import register.before.production.android.extension.isBluetoothEnabled
+import register.before.production.android.extension.isLocationEnabled
 import timber.log.Timber
 
 
@@ -35,14 +43,6 @@ abstract class BaseSensorActivity : AppCompatActivity(),
         observePfiSdk()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        // Start discovering process by checking
-        // location permission and BTs availability.
-        onBleReady()
-    }
-
     override fun onPause() {
         super.onPause()
 
@@ -54,6 +54,32 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
             // Register sensor discover callback.
             pfiSdk?.getBluetoothManager()?.removeSensorDiscoverListener(this)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQUEST_ENABLE_BT -> {
+                if (isBluetoothEnabled()) {
+                    onBleReady()
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onBleReady()
+                }
+            }
+            else -> {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            }
         }
     }
 
@@ -83,12 +109,8 @@ abstract class BaseSensorActivity : AppCompatActivity(),
         // location permission and BT availability.
         onBleReady()
 
-        // Notify.
-        onPfiSdkInitialized(sdk)
-    }
-
-    open fun onPfiSdkInitialized(sdk: PlayfinitySDK) {
-
+        // Log SDK initialize status.
+        Timber.v("Playfinity SDK successfully initialized.")
     }
 
     fun clearSensorCache() {
@@ -132,7 +154,6 @@ abstract class BaseSensorActivity : AppCompatActivity(),
                                 onBleReady()
                             }
                             BluetoothAdapter.STATE_OFF -> {
-                                Timber.d("Clearing sensors cache.")
                                 clearSensorCache()
                             }
                         }
@@ -152,13 +173,54 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
     fun onBleReady() {
 
-        // Check required scanning permissions.
-        if (!canStartBleScanner()) {
-            Timber.v("Cannot start BLE scanner.")
-            return
+        // Conditionally start BLE scanning.
+        if (canStartBleScanner()) {
+            startBleScanning(findOnlyOadDevices)
         }
 
-        startBleScanning(findOnlyOadDevices)
+        // Otherwise, check for missing permissions or services.
+        else {
+            when {
+                !isBluetoothEnabled() -> {
+
+                    // Show a system activity that allows the user to turn on Bluetooth.
+                    startActivityForResult(
+                            Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), REQUEST_ENABLE_BT)
+
+                    Timber.v("Bluetooth disabled. Requesting user to turn it on.")
+
+                    return
+                }
+                !isLocationEnabled() -> {
+
+                    // Show a system activity that allows the user to turn on GPS.
+                    startActivity(
+                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+
+                    Timber.v("Location services disabled. Requesting user to turn GPS on.")
+
+                    return
+                }
+                !hasLocationPermission() -> {
+
+                    Timber.v("Location permission not granted. Requesting user to grant location permission.")
+
+                    // Note: If your app targets Android 9 (API level 28) or lower, you can declare the
+                    // ACCESS_COARSE_LOCATION permission instead of the ACCESS_FINE_LOCATION permission.
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                        ActivityCompat.requestPermissions(this,
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                REQUEST_LOCATION_PERMISSION)
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                                REQUEST_LOCATION_PERMISSION)
+                    }
+
+                    return
+                }
+            }
+        }
     }
 
     private fun onBleStop() {
@@ -200,7 +262,9 @@ abstract class BaseSensorActivity : AppCompatActivity(),
     protected var findOnlyOadDevices: Boolean = false
 
     companion object {
-        //No-op.
+
+        private const val REQUEST_ENABLE_BT = 1000
+        private const val REQUEST_LOCATION_PERMISSION = 2000
     }
 
     //endregion
