@@ -210,28 +210,26 @@ class MainActivity : BaseSensorActivity() {
     }
 
     private fun buildLogRow(event: SensorEvent): EventLogEntry? {
-        var params = ""
-
-        when (event.eventType) {
+        val params = when (event.eventType) {
             SensorEventType.Thrown -> {
-                params = "Speed ${event.speedKmh} km/h"
+                "Speed ${event.speedKmh} km/h"
             }
             SensorEventType.Bounce,
             SensorEventType.Caught,
             SensorEventType.Miss -> {
-                params = "Height ${event.heightBallEvent} cm, Airtime ${event.airTimeMilliseconds} ms"
+                "Height ${event.heightBallEvent} cm, Airtime ${event.airTimeMilliseconds} ms"
             }
             SensorEventType.Jump -> {
-                params = ""
+                ""
             }
             SensorEventType.Land -> {
-                params = "Rotation ${event.yawRotation}, Pitch ${event.pitchRotation}"
+                "Rotation ${event.yawRotation}\u00B0, Pitch ${event.pitchRotation}\u00B0"
             }
             SensorEventType.Kick -> {
-                params = "Speed ${event.speedKmh} km/h"
+                "Speed ${event.speedKmh} km/h"
             }
             else -> {
-                //No-op.
+                ""
             }
         }
 
