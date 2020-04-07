@@ -1,14 +1,18 @@
 package register.before.production.android.ui
 
 import android.os.Bundle
+import androidx.recyclerview.widget.DividerItemDecoration
 import io.playfinity.sdk.SensorEvent
 import io.playfinity.sdk.SensorEventType
 import io.playfinity.sdk.device.Sensor
 import io.playfinity.sdk.errors.PlayfinityThrowable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import register.before.production.android.AppExecutors
+import register.before.production.android.App
+import register.before.production.android.AppType
 import register.before.production.android.R
+import register.before.production.android.ui.adapter.EventLogAdapter
+import register.before.production.android.ui.adapter.EventLogEntry
 import timber.log.Timber
 
 
@@ -22,6 +26,8 @@ class MainActivity : BaseSensorActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
+
+        setupUi()
     }
 
     override fun onPause() {
@@ -36,14 +42,28 @@ class MainActivity : BaseSensorActivity() {
 
     //region Ui
 
-    private fun setupSensorUi(sensor: Sensor) {
-        sensorNameView?.text = getString(R.string.label_sensor_name, sensor.givenName)
-        sensorMacView?.text = getString(R.string.label_sensor_mac, sensor.macAddress)
-        sensorFirmwareView?.text = getString(R.string.label_sensor_firmware, sensor.firmwareVersion)
+    private fun setupUi() {
+        Timber.d("setupUi | Type: ${App.getAppType().name}")
+
+        // Prepare log adapter.
+        setupLogAdapter()
+
+        // Reset Ui.
+        setupSensorUi(null)
     }
 
-    private fun setupEventUi(event: SensorEvent) {
-        lastEventTypeView?.text = getString(R.string.label_event_type, event.eventType.name)
+    private fun setupSensorUi(sensor: Sensor?) {
+        val naLabel = getString(R.string.common_not_available)
+        sensorNameView?.text =
+                getString(R.string.label_sensor_name, sensor?.givenName ?: naLabel)
+        sensorMacView?.text =
+                getString(R.string.label_sensor_mac, sensor?.macAddress ?: naLabel)
+        sensorFirmwareView?.text =
+                getString(R.string.label_sensor_firmware, sensor?.firmwareVersion ?: naLabel)
+    }
+
+    private fun setupEventCounter(label: String) {
+        counterView?.text = getString(R.string.label_counter, label)
     }
 
     override fun onPifSdkLoadingStatus(status: Int) {
@@ -95,14 +115,84 @@ class MainActivity : BaseSensorActivity() {
     override fun onSensorEvent(event: SensorEvent) {
         if (event.eventType != SensorEventType.Inair) {
             Timber.d("onSensorEvent: $event")
-            setupEventUi(event)
+            processEvent(event)
             processEventSound(event)
         }
     }
 
-    //endregion
+    private fun processEvent(event: SensorEvent) {
+        when (App.getAppType()) {
+            AppType.Ball -> {
+                processBallEvents(event)
+            }
+            AppType.Trampoline -> {
+                processTrampolineEvents(event)
+            }
+            AppType.Trix -> {
+                processTrixEvents(event)
+            }
+        }
+    }
 
-    //region Sound
+    private fun processBallEvents(event: SensorEvent) {
+        if (event.eventType == SensorEventType.Thrown) {
+            throws++
+            eventLogAdapter.clear()
+        }
+
+        if (event.eventType == SensorEventType.Thrown
+                || event.eventType == SensorEventType.Bounce
+                || event.eventType == SensorEventType.Caught
+                || event.eventType == SensorEventType.Miss) {
+
+            // Build and insert log entry.
+            val eventRow = buildLogRow(event)
+            eventRow?.let {
+                eventLogAdapter.insertRow(it)
+            }
+        }
+
+        setupEventCounter(getString(R.string.counter_throws, throws))
+    }
+
+    private fun processTrampolineEvents(event: SensorEvent) {
+        if (event.eventType == SensorEventType.Jump) {
+            jumps++
+            eventLogAdapter.clear()
+        }
+
+        if (event.eventType == SensorEventType.Jump
+                || event.eventType == SensorEventType.Land) {
+
+            // Build and insert log entry.
+            val eventRow = buildLogRow(event)
+            eventRow?.let {
+                eventLogAdapter.insertRow(it)
+            }
+        }
+
+        setupEventCounter(getString(R.string.counter_jumps, jumps))
+    }
+
+    private fun processTrixEvents(event: SensorEvent) {
+        if (event.eventType == SensorEventType.Kick) {
+            kicks++
+            eventLogAdapter.clear()
+        }
+
+        if (event.eventType == SensorEventType.Kick
+                || event.eventType == SensorEventType.Bounce
+                || event.eventType == SensorEventType.Miss) {
+
+            // Build and insert log entry.
+            val eventRow = buildLogRow(event)
+            eventRow?.let {
+                eventLogAdapter.insertRow(it)
+            }
+        }
+
+        setupEventCounter(getString(R.string.counter_kicks, kicks))
+    }
 
     private fun processEventSound(event: SensorEvent) {
 
@@ -110,10 +200,54 @@ class MainActivity : BaseSensorActivity() {
 
     //endregion
 
+    //region Adapter
+
+    private val eventLogAdapter = EventLogAdapter(mutableListOf())
+
+    private fun setupLogAdapter() {
+        eventLogList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        eventLogList.adapter = eventLogAdapter
+    }
+
+    private fun buildLogRow(event: SensorEvent): EventLogEntry? {
+        var params = ""
+
+        when (event.eventType) {
+            SensorEventType.Thrown -> {
+                params = "Speed ${event.speedKmh} km/h"
+            }
+            SensorEventType.Bounce,
+            SensorEventType.Caught,
+            SensorEventType.Miss -> {
+                params = "Height ${event.heightBallEvent} cm, Airtime ${event.airTimeMilliseconds} ms"
+            }
+            SensorEventType.Jump -> {
+                params = ""
+            }
+            SensorEventType.Land -> {
+                params = "Rotation ${event.yawRotation}, Pitch ${event.pitchRotation}"
+            }
+            SensorEventType.Kick -> {
+                params = "Speed ${event.speedKmh} km/h"
+            }
+            else -> {
+                //No-op.
+            }
+        }
+
+        return EventLogEntry(event.eventType.name, params)
+    }
+
+    //endregion
+
     //region Companion
 
+    private var throws = 0
+    private var jumps = 0
+    private var kicks = 0
+
     companion object {
-        val executors = AppExecutors()
+        //No-op.
     }
 
     //endregion

@@ -50,10 +50,16 @@ class App : Application(), PFICallback {
     }
 
     private fun connectPfiSDk() {
+        val sensorType = when (getAppType()) {
+            AppType.Trix -> SensorType.Football
+            AppType.Trampoline -> SensorType.Trampoline
+            else -> SensorType.Ball
+        }
+
         PlayfinitySDKBuilder()
                 .enableLogging(BuildConfig.DEBUG)
                 .addCallback(this)
-                .build(this, SensorType.Ball)
+                .build(this, sensorType)
     }
 
     //endregion
