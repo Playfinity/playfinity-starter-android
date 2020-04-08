@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import register.before.production.android.App
 import register.before.production.android.AppType
 import register.before.production.android.R
+import register.before.production.android.sound.SoundSkin
 import register.before.production.android.ui.adapter.EventLogAdapter
 import register.before.production.android.ui.adapter.EventLogEntry
 import timber.log.Timber
@@ -195,7 +196,15 @@ class MainActivity : BaseSensorActivity() {
     }
 
     private fun processEventSound(event: SensorEvent) {
+        soundSkin.let { skin ->
+            val elements = mutableListOf(
+                    skin.eventSound(event))
 
+            val sounds = listOfNotNull(*elements.toTypedArray())
+            sounds.distinct().forEach { skin.play(it) }
+
+            skin.eventSpeech(event)
+        }
     }
 
     //endregion
@@ -234,6 +243,14 @@ class MainActivity : BaseSensorActivity() {
         }
 
         return EventLogEntry(event.eventType.name, params)
+    }
+
+    //endregion
+
+    //region Sound
+
+    private val soundSkin: SoundSkin by lazy {
+        App.getApp(this).getSoundSkin()
     }
 
     //endregion

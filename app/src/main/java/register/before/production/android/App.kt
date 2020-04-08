@@ -2,16 +2,24 @@ package register.before.production.android
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.LiveData
+import android.content.Intent
+import android.speech.tts.TextToSpeech
+import android.util.SparseArray
+import androidx.core.util.containsKey
 import androidx.lifecycle.MutableLiveData
 import io.playfinity.sdk.PFICallback
 import io.playfinity.sdk.PlayfinitySDK
 import io.playfinity.sdk.PlayfinitySDKBuilder
 import io.playfinity.sdk.device.SensorType
 import io.playfinity.sdk.errors.PlayfinityThrowable
+import io.playfinity.sdk.sound.PlayfinitySoundManager
+import register.before.production.android.sound.BallSoundSkin
+import register.before.production.android.sound.SoundSkin
+import register.before.production.android.sound.TrampolineSoundSkin
+import register.before.production.android.sound.TrixSoundSkin
 import timber.log.Timber
 
-class App : Application(), PFICallback {
+class App : Application(), PFICallback, PlayfinitySoundManager.PlayfinitySoundManagerListener {
 
     //region Lifecycle
 
@@ -31,7 +39,7 @@ class App : Application(), PFICallback {
 
     private val pfiLiveData: MutableLiveData<PlayfinitySDK?> = MutableLiveData()
 
-    fun getPfiSdkLiveData(): LiveData<PlayfinitySDK?> =
+    fun getPfiSdkLiveData(): MutableLiveData<PlayfinitySDK?> =
             pfiLiveData
 
     override fun onPlayfinityReady(sdk: PlayfinitySDK) {
@@ -60,6 +68,38 @@ class App : Application(), PFICallback {
                 .enableLogging(BuildConfig.DEBUG)
                 .addCallback(this)
                 .build(this, sensorType)
+    }
+
+    //endregion
+
+    //region Sound
+
+    private val soundManager: PlayfinitySoundManager by lazy {
+        PlayfinitySoundManager.create(this, this)
+    }
+
+    private val soundSkinsArray: SparseArray<SoundSkin> = SparseArray()
+
+    fun getSoundSkin(): SoundSkin {
+        val type = getAppType()
+        val key = type.ordinal
+        return if (soundSkinsArray.containsKey(key)) {
+            soundSkinsArray[key]
+        } else {
+            val soundSkin = when (type) {
+                AppType.Ball -> BallSoundSkin(packageName, soundManager, this@App)
+                AppType.Trampoline -> TrampolineSoundSkin(packageName, soundManager, this@App)
+                AppType.Trix -> TrixSoundSkin(packageName, soundManager, this@App)
+            }
+            soundSkinsArray.put(key, soundSkin)
+            soundSkin
+        }
+    }
+
+    override fun onLanguageDataMissing() {
+        val installIntent = Intent()
+        installIntent.action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
+        startActivity(installIntent)
     }
 
     //endregion
