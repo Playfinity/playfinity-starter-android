@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import register.before.production.android.App
 import register.before.production.android.AppType
+import register.before.production.android.BuildConfig
 import register.before.production.android.R
 import register.before.production.android.sound.SoundSkin
 import register.before.production.android.ui.adapter.EventLogAdapter
@@ -29,6 +30,8 @@ class MainActivity : BaseSensorActivity() {
         setSupportActionBar(toolbar)
 
         setupUi()
+
+        printDebugInfo()
     }
 
     override fun onPause() {
@@ -44,7 +47,6 @@ class MainActivity : BaseSensorActivity() {
     //region Ui
 
     private fun setupUi() {
-        Timber.d("setupUi | Type: ${App.getAppType().name}")
 
         // Prepare log adapter.
         setupLogAdapter()
@@ -251,6 +253,21 @@ class MainActivity : BaseSensorActivity() {
 
     private val soundSkin: SoundSkin by lazy {
         App.getApp(this).getSoundSkin()
+    }
+
+    //endregion
+
+    //region Companion
+
+    private fun printDebugInfo() {
+        Timber.i("================================")
+        Timber.i("Type: ${App.getAppType().name}")
+        Timber.i("Id: ${BuildConfig.APPLICATION_ID}")
+        Timber.i("Flavor: ${BuildConfig.FLAVOR}")
+        Timber.i("Version: ${BuildConfig.VERSION_NAME}")
+        Timber.i("URL -> Playfinity SDK: ${getString(R.string.PFI_API_URL)}")
+        Timber.i("URL -> Cloud transporder: ${getString(R.string.PFI_CLOUD_URL)}")
+        Timber.i("================================")
     }
 
     //endregion

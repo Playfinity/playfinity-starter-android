@@ -33,12 +33,12 @@ android {
         applicationId "register.before.production.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.0"
 
         resValue "string", "PFI_APP_KEY", "SAMPLE_TEST"
         resValue "string", "PFI_DEV_KEY", "SAMPLE_TEST"
+
         resValue "string", "PFI_API_URL", "https://apps.playfinity.io/"
+        resValue "string", "PFI_CLOUD_URL", "https://cloud.playfinity.io/"
     }
 
     //endregion
@@ -88,6 +88,7 @@ android {
             buildConfigField('String', 'APP_TYPE', "\"Ball\"")
             resValue "string", "app_name", "Playfinity Ball Sample"
 
+            versionCode 1
             versionName "1.0.0"
         }
 
@@ -102,6 +103,7 @@ android {
             buildConfigField('String', 'APP_TYPE', "\"Trampoline\"")
             resValue "string", "app_name", "Playfinity Trampoline Sample"
 
+            versionCode 1
             versionName "1.0.0"
         }
 
@@ -116,12 +118,12 @@ android {
             buildConfigField('String', 'APP_TYPE', "\"Trix\"")
             resValue "string", "app_name", "Playfinity Trix Sample"
 
+            versionCode 1
             versionName "1.0.0"
         }
 
         //endregion
     }
-    buildToolsVersion = '28.0.3'
 
     //endregion
 }
@@ -134,10 +136,7 @@ dependencies {
 
     //region Annotation Processors
 
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle"
-    kapt "androidx.room:room-compiler:$room_version"
 
     //endregion
 
@@ -156,7 +155,6 @@ dependencies {
     implementation "com.google.android.material:material:$androidx_material"
     implementation "androidx.lifecycle:lifecycle-runtime:$androidx_lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams:$androidx_lifecycle"
     implementation "androidx.core:core-ktx:$androidx_ktx"
 
     //endregion
@@ -164,15 +162,6 @@ dependencies {
     //region Debugging
 
     implementation "com.jakewharton.timber:timber:$debug_timber"
-    debugImplementation "com.amitshekhar.android:debug-db:$debug_persistence"
-
-    //endregion
-
-    //region Dependency Injection
-
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
 
     //endregion
 
@@ -184,16 +173,7 @@ dependencies {
 
     //region Networking
 
-    implementation "com.squareup.okhttp3:okhttp:$retrofit_http_version"
-    implementation "com.squareup.retrofit2:retrofit:$retorfit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retorfit_version"
-
-    //endregion
-
-    //region Persistence
-
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
 
     //endregion
 

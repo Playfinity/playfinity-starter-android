@@ -274,7 +274,7 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
     //region Config
 
-    protected var findOnlyOadDevices: Boolean = false
+    private var findOnlyOadDevices: Boolean = false
 
     companion object {
 
