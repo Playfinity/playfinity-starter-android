@@ -1,6 +1,6 @@
-# Playfinity API Sample 
+# Playfinity SDK Android Sample 
 
-The SDK Sample is here to help customers get up and running with Playfinity SDK.
+This sample application is here to help customers get up and running with Playfinity SDK on Android.
 
 -------
 
@@ -31,17 +31,18 @@ The SDK Sample is here to help customers get up and running with Playfinity SDK.
 
 ## Screenshots 
 ![Image](https://github.com/Playfinity/playfinity-recorder-android/blob/feature/playfinity-api-sample/DEV/screenshots/screenshots_01.png)
+Sample app screenshot with successfully connected SDK and Playfinity Console (real device photo)
 
 # How to use
 
 ## Requirements 
 
-This application targets Android (5.0) Lollipop and newer.<br>
+This application targets Android (5.0) Lollipop and newer.<br><br>
 To successfully discover Playfinity Console make sure that your device supports Bluetooth Low Energy (BLE).
 
 ## Setup
 
-Make sure to add this lines to your `AndroidManifest.xml`.
+`AndroidManifest.xml`
 
 ```xml
 <meta-data
@@ -60,7 +61,7 @@ Make sure to add this lines to your `AndroidManifest.xml`.
 
 ## Console mode
 
-Playfinity Console can operate in several different modes. For example it can act like a ball or a trampoline device.<br>
+Playfinity Console can operate in a several different modes. For example it can act like a ball or a trampoline ankle band.<br>
 While initializing Playfinity SDK we can choose what mode to use:
 
 ```kotlin
@@ -92,7 +93,7 @@ To toggle it, you need to grand a custom permission `Playfinity Developer Mode` 
 
 To change endpoint url replace:
 
-```
+```xml
 <meta-data
     android:name="io.playfinity.sdk.cloudApiUrl"
     android:value="https://cloud.playfinity.io" />
