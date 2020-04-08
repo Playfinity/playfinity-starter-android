@@ -75,8 +75,8 @@
             android:name="io.playfinity.sdk.apiUrl"
             android:value="@string/PFI_API_URL" />
         <meta-data
-            android:name="io.playfinity.sdk.cloudUrl"
-            android:value="@string/PFI_CLOUD_URL" />
+            android:name="io.playfinity.sdk.cloudApiUrl"
+            android:value="@string/PFI_CLOUD_API_URL" />
 
         <!-- endregion -->
 

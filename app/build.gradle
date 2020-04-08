@@ -38,7 +38,7 @@ android {
         resValue "string", "PFI_DEV_KEY", "SAMPLE_TEST"
 
         resValue "string", "PFI_API_URL", "https://apps.playfinity.io/"
-        resValue "string", "PFI_CLOUD_URL", "https://cloud.playfinity.io/"
+        resValue "string", "PFI_CLOUD_API_URL", "https://cloud.playfinity.io/"
     }
 
     //endregion

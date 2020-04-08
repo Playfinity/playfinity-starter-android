@@ -265,8 +265,8 @@ class MainActivity : BaseSensorActivity() {
         Timber.i("Id: ${BuildConfig.APPLICATION_ID}")
         Timber.i("Flavor: ${BuildConfig.FLAVOR}")
         Timber.i("Version: ${BuildConfig.VERSION_NAME}")
-        Timber.i("URL -> Playfinity SDK: ${getString(R.string.PFI_API_URL)}")
-        Timber.i("URL -> Cloud transporder: ${getString(R.string.PFI_CLOUD_URL)}")
+        Timber.i("Playfinity API URL: ${getString(R.string.PFI_API_URL)}")
+        Timber.i("Cloud API URL: ${getString(R.string.PFI_CLOUD_API_URL)}")
         Timber.i("================================")
     }
 
