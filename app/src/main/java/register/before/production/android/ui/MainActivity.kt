@@ -257,7 +257,7 @@ class MainActivity : BaseSensorActivity() {
 
     //endregion
 
-    //region Companion
+    //region Debug
 
     private fun printDebugInfo() {
         Timber.i("================================")
