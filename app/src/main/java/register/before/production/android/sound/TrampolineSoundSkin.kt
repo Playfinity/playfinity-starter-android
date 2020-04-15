@@ -24,11 +24,11 @@ open class TrampolineSoundSkin(
 
     override val jump: PlayfinitySoundSettings? = createSoundSettings(R.raw.trampo_hopp, PlayfinitySoundVolume.high())
 
-    override val voFlip: PlayfinitySoundSettings? = createSoundSettings(R.raw.vvo_flip, PlayfinitySoundVolume.high())
-    override val vo90degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vvo_90, PlayfinitySoundVolume.high())
-    override val vo180degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vvo_180, PlayfinitySoundVolume.high())
-    override val vo270degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vvo_270, PlayfinitySoundVolume.high())
-    override val vo360degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vvo_360, PlayfinitySoundVolume.high())
+    override val voFlip: PlayfinitySoundSettings? = createSoundSettings(R.raw.vo_flip, PlayfinitySoundVolume.high())
+    override val vo90degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vo_90, PlayfinitySoundVolume.high())
+    override val vo180degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vo_180, PlayfinitySoundVolume.high())
+    override val vo270degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vo_270, PlayfinitySoundVolume.high())
+    override val vo360degree: PlayfinitySoundSettings? = createSoundSettings(R.raw.vo_360, PlayfinitySoundVolume.high())
 
     //endregion
 
