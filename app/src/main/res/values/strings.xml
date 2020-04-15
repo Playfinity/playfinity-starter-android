@@ -16,7 +16,7 @@
     <string name="label_sensor">Sensor</string>
     <string name="label_sensor_name">Name: %1$s</string>
     <string name="label_sensor_firmware">Firmware: %1$s</string>
-    <string name="label_sensor_mac">MAC: %1$s</string>
+    <string name="label_sensor_id">Id: %1$s</string>
 
     <string name="label_event">Event</string>
     <string name="label_event_type">Type: %1$s</string>

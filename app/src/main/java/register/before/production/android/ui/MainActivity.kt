@@ -6,6 +6,7 @@ import io.playfinity.sdk.SensorEvent
 import io.playfinity.sdk.SensorEventType
 import io.playfinity.sdk.device.Sensor
 import io.playfinity.sdk.errors.PlayfinityThrowable
+import io.playfinity.sdk.extentions.md5
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import register.before.production.android.App
@@ -60,7 +61,7 @@ class MainActivity : BaseSensorActivity() {
         sensorNameView?.text =
                 getString(R.string.label_sensor_name, sensor?.givenName ?: naLabel)
         sensorMacView?.text =
-                getString(R.string.label_sensor_mac, sensor?.macAddress ?: naLabel)
+                getString(R.string.label_sensor_id, sensor?.sensorId?.md5() ?: naLabel)
         sensorFirmwareView?.text =
                 getString(R.string.label_sensor_firmware, sensor?.firmwareVersion ?: naLabel)
     }
