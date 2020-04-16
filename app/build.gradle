@@ -1,40 +1,187 @@
+
+//region Startup Plugins
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+//endregion
+
+//region Android
 
 android {
+
+    //region Compile
+
     compileSdkVersion 28
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    //endregion
+
+    //region Default Config
+
     defaultConfig {
-        applicationId "register.before.production.playfinity.raw"
+        applicationId "register.before.production.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        resValue "string", "PFI_APP_KEY", "DDCC1CBE711"
-        resValue "string", "PFI_DEV_KEY", "DDCC81BC09A1"
-        resValue "string", "PFI_API_URL", "https://testapps001.playfinity.io/"
+        resValue "string", "PFI_APP_KEY", "SAMPLE_TEST"
+        resValue "string", "PFI_DEV_KEY", "SAMPLE_TEST"
+
+        resValue "string", "PFI_API_URL", "https://apps.playfinity.io/"
+        resValue "string", "PFI_CLOUD_API_URL", "https://cloud.playfinity.io/"
     }
+
+    //endregion
+
+    //region Android Extensions
+
+    androidExtensions {
+        experimental = true
+    }
+
+    //endregion
+
+    //region Flavor Dimensions
+
+    flavorDimensions "default"
+
+    //endregion
+
+    //region Build Types
+
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+
         release {
             debuggable false
+            minifyEnabled true
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //endregion
+
+    //region Product Flavors
+
+    productFlavors {
+
+        //region Ball
+
+        typeBall {
+            dimension "default"
+            applicationIdSuffix ".ball"
+
+            buildConfigField('String', 'APP_TYPE', "\"Ball\"")
+            resValue "string", "app_name", "Playfinity Ball Sample"
+
+            versionCode 1
+            versionName "1.0.0"
+        }
+
+        //endregion
+
+        //region Trampoline
+
+        typeTrampoline {
+            dimension "default"
+            applicationIdSuffix ".trampoline"
+
+            buildConfigField('String', 'APP_TYPE', "\"Trampoline\"")
+            resValue "string", "app_name", "Playfinity Trampoline Sample"
+
+            versionCode 1
+            versionName "1.0.0"
+        }
+
+        //endregion
+
+        //region Trix
+
+        typeTrix {
+            dimension "default"
+            applicationIdSuffix ".trix"
+
+            buildConfigField('String', 'APP_TYPE', "\"Trix\"")
+            resValue "string", "app_name", "Playfinity Trix Sample"
+
+            versionCode 1
+            versionName "1.0.0"
+        }
+
+        //endregion
+    }
+
+    //endregion
 }
 
+//endregion
+
+//region Dependencies
+
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation files('libs/playfinity-0.0.9.jar')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //region Annotation Processors
+
+    kapt "androidx.lifecycle:lifecycle-common-java8:$androidx_lifecycle"
+
+    //endregion
+
+    //region Application Files
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //endregion
+
+    //region Android X
+
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "androidx.cardview:cardview:$androidx_cardview"
+    implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
+    implementation "com.google.android.material:material:$androidx_material"
+    implementation "androidx.lifecycle:lifecycle-runtime:$androidx_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle"
+    implementation "androidx.core:core-ktx:$androidx_ktx"
+
+    //endregion
+
+    //region Debugging
+
+    implementation "com.jakewharton.timber:timber:$debug_timber"
+
+    //endregion
+
+    //region Kotlin
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    //endregion
+
+    //region Networking
+
+    implementation "com.squareup.retrofit2:converter-gson:$retorfit_version"
+
+    //endregion
+
+    //region Testing
+
+    testImplementation 'junit:junit:4.12'
+
+    //endregion
 }
+
+//endregion
