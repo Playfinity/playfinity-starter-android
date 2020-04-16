@@ -30,7 +30,7 @@ This sample application is here to help customers get up and running with Playfi
 # Preview
 
 ## Screenshots 
-![Image](https://github.com/Playfinity/playfinity-recorder-android/blob/feature/playfinity-api-sample/DEV/screenshots/screenshots_01.png)
+![Image](https://github.com/Playfinity/playfinity-recorder-android/blob/master/DEV/screenshots/screenshots_01.png)
 Sample app screenshot with successfully connected SDK and Playfinity Console (real device photo)
 
 # How to use
