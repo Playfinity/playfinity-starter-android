@@ -14,11 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import io.playfinity.sdk.PlayfinitySDK
-import io.playfinity.sdk.SensorEvent
-import io.playfinity.sdk.callbacks.DiscoverSensorListener
-import io.playfinity.sdk.device.Sensor
-import io.playfinity.sdk.device.SensorEventsSubscriber
-import io.playfinity.sdk.errors.PlayfinityThrowable
+import io.playfinity.sdk.core.callback.DiscoverSensorListener
+import io.playfinity.sdk.core.device.Sensor
+import io.playfinity.sdk.core.device.SensorEvent
+import io.playfinity.sdk.core.device.SensorEventsSubscriber
+import io.playfinity.sdk.utility.error.PFIThrowable
 import register.before.production.android.App
 import register.before.production.android.extension.hasAllRequiredBlePermissionsAndServices
 import register.before.production.android.extension.hasLocationPermission
@@ -138,7 +138,7 @@ abstract class BaseSensorActivity : AppCompatActivity(),
 
     abstract override fun onSensorDiscovered(sensor: Sensor)
 
-    abstract override fun onSensorDiscoverError(playfinityThrowable: PlayfinityThrowable)
+    abstract override fun onSensorDiscoverError(pfiThrowable: PFIThrowable)
 
     abstract override fun onSensorEvent(event: SensorEvent)
 
