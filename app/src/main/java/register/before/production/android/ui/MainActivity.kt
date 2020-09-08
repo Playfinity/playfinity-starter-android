@@ -2,11 +2,12 @@ package register.before.production.android.ui
 
 import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
-import io.playfinity.sdk.SensorEvent
-import io.playfinity.sdk.SensorEventType
-import io.playfinity.sdk.device.Sensor
-import io.playfinity.sdk.errors.PlayfinityThrowable
-import io.playfinity.sdk.extentions.md5
+import io.playfinity.sdk.core.device.Sensor
+import io.playfinity.sdk.core.device.SensorEvent
+import io.playfinity.sdk.core.device.SensorEventType
+import io.playfinity.sdk.persistence.PFIDatabase
+import io.playfinity.sdk.utility.error.PFIThrowable
+import io.playfinity.sdk.utility.extention.md5
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import register.before.production.android.App
@@ -98,8 +99,8 @@ class MainActivity : BaseSensorActivity() {
         setupSensor(sensor)
     }
 
-    override fun onSensorDiscoverError(playfinityThrowable: PlayfinityThrowable) {
-        Timber.e("onSensorDiscoverError: ${playfinityThrowable.type}")
+    override fun onSensorDiscoverError(pfiThrowable: PFIThrowable) {
+        Timber.e("onSensorDiscoverError: ${pfiThrowable.type}")
     }
 
     private fun setupSensor(sensor: Sensor) {

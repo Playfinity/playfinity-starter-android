@@ -1,8 +1,8 @@
 package register.before.production.android.sound
 
-import io.playfinity.sdk.SensorEvent
-import io.playfinity.sdk.SensorEventType
-import io.playfinity.sdk.sound.PlayfinitySoundSettings
+import io.playfinity.sdk.core.device.SensorEvent
+import io.playfinity.sdk.core.device.SensorEventType
+import io.playfinity.sdk.core.sound.PlayfinitySoundSettings
 import register.before.production.android.AppType
 
 interface SoundSkin {

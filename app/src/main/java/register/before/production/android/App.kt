@@ -10,13 +10,14 @@ import androidx.lifecycle.MutableLiveData
 import io.playfinity.sdk.PFICallback
 import io.playfinity.sdk.PlayfinitySDK
 import io.playfinity.sdk.PlayfinitySDKBuilder
-import io.playfinity.sdk.device.SensorType
-import io.playfinity.sdk.errors.PlayfinityThrowable
-import io.playfinity.sdk.sound.PlayfinitySoundManager
+import io.playfinity.sdk.core.sound.PlayfinitySoundManager
+import io.playfinity.sdk.utility.error.PFIThrowable
+import io.playfinity.sdk.core.device.SensorType
 import register.before.production.android.sound.BallSoundSkin
 import register.before.production.android.sound.SoundSkin
 import register.before.production.android.sound.TrampolineSoundSkin
 import register.before.production.android.sound.TrixSoundSkin
+
 import timber.log.Timber
 
 class App : Application(), PFICallback, PlayfinitySoundManager.PlayfinitySoundManagerListener {
@@ -48,10 +49,10 @@ class App : Application(), PFICallback, PlayfinitySoundManager.PlayfinitySoundMa
         pfiLiveData.postValue(sdk)
     }
 
-    override fun onPlayfinityError(playfinityThrowable: PlayfinityThrowable) {
+    override fun onPlayfinityError(pfiThrowable: PFIThrowable) {
 
         // Log an error.
-        Timber.e("Failed to initialize Playfinity SDK. Error ${playfinityThrowable.type}")
+        Timber.e("Failed to initialize Playfinity SDK. Error ${pfiThrowable.type}")
 
         // Notify subscribers.
         pfiLiveData.postValue(null)

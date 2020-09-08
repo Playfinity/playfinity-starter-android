@@ -1,10 +1,10 @@
 package register.before.production.android.sound
 
 import android.app.Application
-import io.playfinity.sdk.SensorEvent
-import io.playfinity.sdk.sound.PlayfinitySoundManager
-import io.playfinity.sdk.sound.PlayfinitySoundSettings
-import io.playfinity.sdk.sound.PlayfinitySoundVolume
+import io.playfinity.sdk.core.device.SensorEvent
+import io.playfinity.sdk.core.sound.PlayfinitySoundManager
+import io.playfinity.sdk.core.sound.PlayfinitySoundSettings
+import io.playfinity.sdk.core.sound.PlayfinitySoundVolume
 import register.before.production.android.AppType
 import register.before.production.android.R
 import kotlin.math.abs
