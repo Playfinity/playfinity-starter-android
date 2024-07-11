@@ -4,9 +4,8 @@
     <color name="black">#121212</color>
     <color name="doveGray">#646464</color>
     <color name="white">#ffffff</color>
-    <color name="romantic">#ffd7b5</color>
-    <color name="hitPink">#ffb38a</color>
-    <color name="coral">#ff9248</color>
-    <color name="playfinity">#ff6700</color>
+
+    <color name="yellowOrange">#ffa447</color>
+    <color name="macaroniAndCheese">#ffb972</color>
 
 </resources>
