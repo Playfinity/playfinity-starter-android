@@ -40,10 +40,8 @@ To successfully discover Playfinity devices make sure that your device supports 
 
 # Preview
 
-## Screenshots 
-![starter](https://github.com/Playfinity/playfinity-recorder-android/assets/8034071/54266a78-cf5b-47fb-bbf4-fbc3333c933b)
-
-Sample app screenshot with successfully connected SDK and Playfinity Console (real device photo)
+## Screens
+![starter](https://github.com/Playfinity/playfinity-recorder-android/assets/8034071/989b9534-a990-40dd-b1cf-1bd9e59359e5)
 
 # How to use
 
