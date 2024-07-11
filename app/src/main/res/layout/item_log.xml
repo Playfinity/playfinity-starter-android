@@ -5,21 +5,22 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/logEntryTitleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/primaryText"
-        android:textSize="18sp"
+        android:text="@string/empty_param"
+        android:textColor="@color/doveGray"
+        android:textSize="14sp"
         android:textStyle="bold"
         tools:text="Jump" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/logEntryDescView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_sdk_not_connected"
-        android:textColor="@color/secondaryText"
+        android:text="@string/empty_param"
+        android:textColor="@color/doveGray"
         android:textSize="12sp"
         tools:text="Params: Height 100" />
 

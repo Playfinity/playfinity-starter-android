@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <eat-comment />
-
-    <!-- region Palette -->
-
+    <color name="black">#121212</color>
+    <color name="doveGray">#646464</color>
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
 
-    <color name="primaryText">#212121</color>
-    <color name="secondaryText">#757575</color>
-
-    <color name="colorPrimary">#FF5722</color>
-    <color name="colorPrimaryDark">#E64A19</color>
-    <color name="colorAccent">#448AFF</color>
-
-    <!-- endregion -->
+    <color name="yellowOrange">#FF7400</color>
+    <color name="macaroniAndCheese">#FFC799</color>
 
 </resources>

@@ -1,46 +1,49 @@
-# Playfinity SDK Android Sample 
-
-This sample application is here to help customers get up and running with Playfinity SDK on Android.
-
-The Playfinity SDK communicates with playOS on the Playfinity console.
-
--------
+<h1 align="center">
+  Playfinity Starter Android (Football and Smartball)
+</h1>
 
 <p align="center">
-    <a href="https://playfinity.io/">Playfinity.io</a>
+    This sample application is designed to assist customers in getting started with Playfinity hardware, including Smartball and Football.
+</p>
+
+<p align="center">
+    <a href="https://playfinity.com/">Playfinity.com</a>
     :heavy_check_mark:
-    <a href="https://www.facebook.com/playfinity.io/">Facebook</a>
+    <a href="https://www.facebook.com/profile.php?id=100068605786408">Facebook</a>
     :heavy_check_mark:
     <a href="https://www.instagram.com/playfinity_io/">Instagram</a>
     :heavy_check_mark:
     <a href="https://www.youtube.com/channel/UCiJSGEIcw_-OHlYjTOeJ-Ag/featured/">Youtube</a>
 </p>
 
+## Setup
+
+<details open><summary><b>Compatibility 🔄</b></summary>
+<p>
+  
+This application targets `Android SDK 21` (Lollipop) and newer.
+To successfully discover Playfinity devices make sure that your device supports Bluetooth Low Energy (BLE).
+
+</p>
+</details>
+
+> [!TIP]
+> Android SDK configuration can be found in root `build.gradle` file.
+
 -------
 
 ### What's included :rocket:
-- Playfinity SDK embedded
-- Playfinity console discovering and pairing (BLE)
-- Listening and reacting to console events
-- Sounds
-- Ball throwing sample
-- Trampoline jumping sample
-- Trick ball sample
-- Cloud transporter
+- Support for Football
+- Support for Smartball
+- Listening and reacting to console events and raw data
 - Coded in Kotlin
 
 # Preview
 
-## Screenshots 
-![Image](https://github.com/Playfinity/playfinity-recorder-android/blob/master/DEV/screenshots/screenshots_01.png)
-Sample app screenshot with successfully connected SDK and Playfinity Console (real device photo)
+## Screens
+![starter](https://github.com/Playfinity/playfinity-recorder-android/assets/8034071/989b9534-a990-40dd-b1cf-1bd9e59359e5)
 
 # How to use
-
-## Requirements 
-
-This application targets Android (5.0) Lollipop and newer.<br><br>
-To successfully discover Playfinity Console make sure that your device supports Bluetooth Low Energy (BLE).
 
 ## Setup
 
@@ -61,7 +64,7 @@ To successfully discover Playfinity Console make sure that your device supports 
     android:value="https://cloud.playfinity.io" />
 ```
 
-## Console mode
+## Console mode (Smartball)
 
 Playfinity Console can operate in a several different modes. For example it can act like a ball or a trampoline ankle band.<br>
 While initializing Playfinity SDK we can choose what mode to use:
@@ -73,9 +76,8 @@ PlayfinitySDKBuilder()
     .build(this, io.playfinity.sdk.device.SensorType.Ball)
 ```
 
-:information_source: Please note that the console will produce different events `io.playfinity.sdk.SensorEventType` while working under specific mode.
-
-## Build variants
+> [!TIP]
+> Please note that the console will produce different events `io.playfinity.sdk.SensorEventType` while working under specific mode.
 
 ### 1. `typeBall`
 Puts the console into `Ball` mode.<br>
@@ -89,23 +91,9 @@ Events: `Jump`, `Land`.
 Puts the console into `Football` mode, to provide football-like experience.<br>
 Events: `Kick`, `Bounce`, `Miss`.
 
-## Cloud Transporder :cloud:
-Playfinity Cloud Transporder enables an option to send console events to a specified endpoint in real time.<br>
-To toggle it, you need to grand a custom permission `Playfinity Developer Mode` in your application settings.
-
-To change endpoint url replace:
-
-```xml
-<meta-data
-    android:name="io.playfinity.sdk.cloudApiUrl"
-    android:value="https://cloud.playfinity.io" />
-```
-
-with your own URL.
-
 # License
 
-    Copyright 2020 Playfinity.io
+    Copyright 2024 Playfinity.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

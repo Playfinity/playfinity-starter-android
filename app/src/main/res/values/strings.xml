@@ -1,8 +1,7 @@
 <resources>
-
-    <eat-comment />
-
-    <!-- region Common -->
+    <string name="app_name">Playfinity Starter</string>
+    <string name="type_football">Football</string>
+    <string name="type_smartball">Smartball</string>
 
     <string name="common_no">No</string>
     <string name="common_yes">Yes</string>
@@ -13,7 +12,7 @@
     <string name="label_sdk_connecting">Status: Connecting…</string>
     <string name="label_sdk_not_connected">Status: Not connected.</string>
 
-    <string name="label_sensor">Sensor</string>
+    <string name="label_sensor">Device</string>
     <string name="label_sensor_name">Name: %1$s</string>
     <string name="label_sensor_firmware">Firmware: %1$s</string>
     <string name="label_sensor_id">Id: %1$s</string>
@@ -28,7 +27,6 @@
     <string name="counter_kicks">%1$d kick\'s</string>
 
     <string name="event_log">Event\'s log:</string>
-
-    <!-- endregion -->
+    <string name="empty_param">\-</string>
 
 </resources>
