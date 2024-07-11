@@ -31,19 +31,6 @@ android {
 
             // Specifies signing config for this variant.
             signingConfig = signingConfigs.getByName("debug")
-
-            // Specifies version name suffix, that will be appended to the "base"
-            // version name when calculating the final version name for this variant.
-            versionNameSuffix = " Internal"
-        }
-
-        release {
-
-            // Specifies whether to enable code shrinking for this build type.
-            isMinifyEnabled = true
-
-            // Specifies signing config for this variant.
-            signingConfig = signingConfigs.getByName("release")
         }
     }
 
