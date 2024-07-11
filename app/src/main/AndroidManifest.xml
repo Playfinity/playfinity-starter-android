@@ -59,6 +59,19 @@
             android:exported="true">
         </activity>
 
+        <meta-data
+            android:name="io.playfinity.sdk.applicationKey"
+            android:value="@string/PFI_APP_KEY" />
+        <meta-data
+            android:name="io.playfinity.sdk.developerId"
+            android:value="@string/PFI_DEV_KEY" />
+        <meta-data
+            android:name="io.playfinity.sdk.apiUrl"
+            android:value="@string/PFI_API_URL" />
+        <meta-data
+            android:name="io.playfinity.sdk.cloudApiUrl"
+            android:value="@string/PFI_CLOUD_API_URL" />
+
     </application>
 
 </manifest>

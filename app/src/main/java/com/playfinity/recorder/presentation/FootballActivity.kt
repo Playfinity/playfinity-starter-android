@@ -21,6 +21,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
+import com.playfinity.recorder.R
 import com.playfinity.recorder.utils.SensorCharacteristics
 import com.playfinity.recorder.utils.SensorDescriptors
 import com.playfinity.recorder.utils.SensorServices
@@ -32,7 +33,6 @@ import com.playfinity.recorder.utils.hasLocationPermission
 import com.playfinity.recorder.utils.isBluetoothEnabled
 import com.playfinity.recorder.utils.isLocationEnabled
 import com.playfinity.recorder.utils.isLocationRequired
-import io.playfinity.sdk.sample.R
 
 @SuppressLint("MissingPermission")
 class FootballActivity : AppCompatActivity() {

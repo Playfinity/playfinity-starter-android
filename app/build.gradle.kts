@@ -78,10 +78,10 @@ android {
         versionName = "1.0.0"
 
         // Adds a new generated app name resource's.
-        resValue("string", "PFI_APP_KEY", "FRAMEWORK")
-        resValue("string", "PFI_DEV_KEY", "INTERNAL")
-        resValue("string", "PFI_API_URL", "https://testapps.playfinity.io/")
-        resValue("string", "PFI_CLOUD_API_URL", "https://testapps.playfinity.io/")
+        resValue("string", "PFI_APP_KEY", "SAMPLE_TEST")
+        resValue("string", "PFI_DEV_KEY", "SAMPLE_TEST")
+        resValue("string", "PFI_API_URL", "https://apps.playfinity.io/")
+        resValue("string", "PFI_CLOUD_API_URL", "https://cloud.playfinity.io/")
     }
 
     /**

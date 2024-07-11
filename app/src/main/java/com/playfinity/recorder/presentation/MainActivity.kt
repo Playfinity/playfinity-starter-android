@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import io.playfinity.sdk.sample.R
+import com.playfinity.recorder.R
 
 class MainActivity : AppCompatActivity() {
 
