@@ -54,8 +54,8 @@ android {
         applicationId = "register.before.production.android"
         minSdk = 21
         targetSdk = 34
-        versionCode = 10001
-        versionName = "1.0.0"
+        versionCode = 10101
+        versionName = "1.1.0"
 
         // Adds a new generated app name resource's.
         resValue("string", "PFI_APP_KEY", "SAMPLE_TEST")
