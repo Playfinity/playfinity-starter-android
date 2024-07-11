@@ -38,7 +38,7 @@ import io.playfinity.sdk.sample.R
 class FootballActivity : AppCompatActivity() {
 
     private companion object {
-        private const val TAG = "MainActivity"
+        private const val TAG = "FootballActivity"
     }
 
     private var bluetoothAdapter: BluetoothAdapter? = null
