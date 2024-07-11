@@ -14,7 +14,12 @@ import android.bluetooth.le.BluetoothLeScanner
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.os.Bundle
+import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.playfinity.recorder.R
+import com.playfinity.recorder.presentation.adapter.EventLogAdapter
+import com.playfinity.recorder.presentation.adapter.EventLogEntry
 import com.playfinity.recorder.utils.SensorCharacteristics
 import com.playfinity.recorder.utils.SensorDescriptors
 import com.playfinity.recorder.utils.SensorServices
@@ -36,6 +41,7 @@ class FootballActivity : PlayfinityActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_football)
+        setupLogAdapter()
         init()
     }
 
@@ -59,11 +65,14 @@ class FootballActivity : PlayfinityActivity() {
 
         isScanningInitializing = true
 
+        addLog("Starting BLE scanner.")
+
         val bluetoothLeScanner = bluetoothAdapter?.bluetoothLeScanner
         bluetoothLeScanner?.startScan(bleCallback)
     }
 
     private fun init() {
+        addLog("Initializing BLE adapter...")
 
         val bluetoothManager = getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
 
@@ -71,7 +80,14 @@ class FootballActivity : PlayfinityActivity() {
         bluetoothLeScanner = bluetoothAdapter?.bluetoothLeScanner
     }
 
+    @SuppressLint("SetTextI18n")
     private fun connectToDevice(device: BluetoothDevice) {
+        addLog("Connecting to ${device.name}")
+
+        findViewById<TextView>(R.id.sensorNameView).text = "Firmware: ${device.name}"
+        findViewById<TextView>(R.id.sensorMacView).text = "MAC: ${device.address}"
+        findViewById<TextView>(R.id.sensorRawDataView).text = ""
+
         bluetoothGatt = device.connectGatt(this, false, gattCallback)
     }
 
@@ -81,6 +97,8 @@ class FootballActivity : PlayfinityActivity() {
         characteristic: BluetoothGattCharacteristic,
         enabled: Boolean
     ) {
+        addLog("Enabling notifications...")
+
         gatt.setCharacteristicNotification(characteristic, enabled)
 
         val descriptor: BluetoothGattDescriptor? =
@@ -92,6 +110,10 @@ class FootballActivity : PlayfinityActivity() {
 
     private fun processBluetoothData(data: ByteArray) {
         val rawData = data.toHexString()
+
+        runOnUiThread {
+            findViewById<TextView>(R.id.sensorRawDataView).text = rawData
+        }
     }
 
     private fun stopBleScanning() {
@@ -102,6 +124,8 @@ class FootballActivity : PlayfinityActivity() {
             return
         }
 
+        addLog("BLE scanner stopped.")
+
         bluetoothLeScanner?.stopScan(bleCallback)
     }
 
@@ -111,7 +135,7 @@ class FootballActivity : PlayfinityActivity() {
             val device: BluetoothDevice = result.device
 
             if (Utils.isPlayfinityDevice(device.name)) {
-
+                addLog("Found Playfinity device.")
                 stopBleScanning()
                 connectToDevice(device)
             }
@@ -121,21 +145,20 @@ class FootballActivity : PlayfinityActivity() {
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
+                addLog("Device connected.")
                 gatt.discoverServices()
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                addLog("Device disconnected.")
+                onReadyToScan()
             }
         }
 
         override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
 
-/*                gatt.services.forEach { service ->
-                    service.characteristics.forEach { char ->
-                        Log.i(TAG, "${service.uuid}, ${char.uuid}")
-                    }
-                }*/
-
                 val service: BluetoothGattService? = gatt.getService(SensorServices.movement)
+
+                addLog("Services discovered.")
 
                 service?.let {
                     val characteristic: BluetoothGattCharacteristic? =
@@ -154,6 +177,26 @@ class FootballActivity : PlayfinityActivity() {
             characteristic: BluetoothGattCharacteristic?
         ) {
             characteristic?.value?.let { processBluetoothData(it) }
+        }
+    }
+
+    private val eventLogAdapter = EventLogAdapter(mutableListOf())
+
+    private fun setupLogAdapter() {
+        val rv = findViewById<RecyclerView>(R.id.eventLogList)
+
+        rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        rv.adapter = eventLogAdapter
+    }
+
+    private fun addLog(title: String, desc: String = "") {
+        runOnUiThread {
+            eventLogAdapter.insertRow(EventLogEntry(title, desc))
+
+            val rv = findViewById<RecyclerView>(R.id.eventLogList)
+            rv.post {
+                rv.scrollToPosition(eventLogAdapter.itemCount - 1)
+            }
         }
     }
 }

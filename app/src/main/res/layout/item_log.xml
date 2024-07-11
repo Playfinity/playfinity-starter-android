@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_param"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textColor="@color/doveGray"
+        android:textSize="14sp"
         android:textStyle="bold"
         tools:text="Jump" />
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_param"
-        android:textColor="@color/black"
+        android:textColor="@color/doveGray"
         android:textSize="12sp"
         tools:text="Params: Height 100" />
 

@@ -12,7 +12,7 @@
     <string name="label_sdk_connecting">Status: Connecting…</string>
     <string name="label_sdk_not_connected">Status: Not connected.</string>
 
-    <string name="label_sensor">Sensor</string>
+    <string name="label_sensor">Device</string>
     <string name="label_sensor_name">Name: %1$s</string>
     <string name="label_sensor_firmware">Firmware: %1$s</string>
     <string name="label_sensor_id">Id: %1$s</string>

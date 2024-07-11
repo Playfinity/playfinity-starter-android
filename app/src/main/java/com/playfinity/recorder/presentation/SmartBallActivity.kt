@@ -108,12 +108,7 @@ class SmartBallActivity : PlayfinityActivity(),
         if (event.eventType != SensorEventType.Inair
             && event.eventType != SensorEventType.Jumping
         ) {
-            eventLogAdapter.insertRow(buildLogRow(event))
-
-            val rv = findViewById<RecyclerView>(R.id.eventLogList)
-            rv.post {
-                rv.scrollToPosition(eventLogAdapter.itemCount - 1)
-            }
+            addLog(event)
         }
     }
 
@@ -177,6 +172,12 @@ class SmartBallActivity : PlayfinityActivity(),
         rv.adapter = eventLogAdapter
     }
 
-    private fun buildLogRow(event: SensorEvent): EventLogEntry =
-        EventLogEntry(event.eventType.name, event.toString())
+    private fun addLog(event: SensorEvent) {
+        eventLogAdapter.insertRow(EventLogEntry(event.eventType.name, event.toString()))
+
+        val rv = findViewById<RecyclerView>(R.id.eventLogList)
+        rv.post {
+            rv.scrollToPosition(eventLogAdapter.itemCount - 1)
+        }
+    }
 }
