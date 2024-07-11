@@ -4,49 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.playfinity.sdk.sample.MainActivity">
+    tools:context="com.playfinity.recorder.presentation.MainActivity">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorHitPink"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/connectionStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            tools:text="Status: Connected" />
+            android:text="@string/type_football"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="40sp" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorCoral"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top">
 
         <TextView
-            android:id="@+id/sensorStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            tools:text="SensorId: 33:34:34:#4" />
+            android:text="@string/type_smartball"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="40sp" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="10dp"/>
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/sensorEventStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            tools:text="Event: Land" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>

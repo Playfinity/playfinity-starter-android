@@ -1,4 +1,4 @@
-package io.playfinity.sdk.sample
+package com.playfinity.recorder.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,10 +21,21 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
-import io.playfinity.sdk.sample.Utils.toHexString
+import com.playfinity.recorder.utils.SensorCharacteristics
+import com.playfinity.recorder.utils.SensorDescriptors
+import com.playfinity.recorder.utils.SensorServices
+import com.playfinity.recorder.utils.Utils
+import com.playfinity.recorder.utils.Utils.toHexString
+import com.playfinity.recorder.utils.hasAllRequiredBlePermissionsAndServices
+import com.playfinity.recorder.utils.hasBluetoothPermission
+import com.playfinity.recorder.utils.hasLocationPermission
+import com.playfinity.recorder.utils.isBluetoothEnabled
+import com.playfinity.recorder.utils.isLocationEnabled
+import com.playfinity.recorder.utils.isLocationRequired
+import io.playfinity.sdk.sample.R
 
 @SuppressLint("MissingPermission")
-class MainActivity : AppCompatActivity() {
+class FootballActivity : AppCompatActivity() {
 
     private companion object {
         private const val TAG = "MainActivity"
@@ -40,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_football)
 
         init()
         startScanningWithPermissions()

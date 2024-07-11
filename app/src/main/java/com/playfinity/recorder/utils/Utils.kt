@@ -1,4 +1,4 @@
-package io.playfinity.sdk.sample
+package com.playfinity.recorder.utils
 
 import java.util.regex.Pattern
 

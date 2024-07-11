@@ -1,4 +1,4 @@
-package io.playfinity.sdk.sample
+package com.playfinity.recorder.application
 
 import android.app.Application
 
