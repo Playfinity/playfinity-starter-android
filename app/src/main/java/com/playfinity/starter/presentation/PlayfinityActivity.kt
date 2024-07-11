@@ -1,4 +1,4 @@
-package com.playfinity.recorder.presentation
+package com.playfinity.starter.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,11 +7,11 @@ import android.os.Build.VERSION
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
-import com.playfinity.recorder.utils.hasBluetoothPermission
-import com.playfinity.recorder.utils.hasLocationPermission
-import com.playfinity.recorder.utils.isBluetoothEnabled
-import com.playfinity.recorder.utils.isLocationEnabled
-import com.playfinity.recorder.utils.isLocationRequired
+import com.playfinity.starter.utils.hasBluetoothPermission
+import com.playfinity.starter.utils.hasLocationPermission
+import com.playfinity.starter.utils.isBluetoothEnabled
+import com.playfinity.starter.utils.isLocationEnabled
+import com.playfinity.starter.utils.isLocationRequired
 
 @SuppressLint("MissingPermission")
 abstract class PlayfinityActivity : AppCompatActivity() {

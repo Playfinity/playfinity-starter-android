@@ -1,13 +1,13 @@
-package com.playfinity.recorder.presentation
+package com.playfinity.starter.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.playfinity.recorder.R
-import com.playfinity.recorder.presentation.adapter.EventLogAdapter
-import com.playfinity.recorder.presentation.adapter.EventLogEntry
+import com.playfinity.starter.R
+import com.playfinity.starter.presentation.adapter.EventLogAdapter
+import com.playfinity.starter.presentation.adapter.EventLogEntry
 import io.playfinity.sdk.PFICallback
 import io.playfinity.sdk.PlayfinitySDK
 import io.playfinity.sdk.PlayfinitySDKBuilder
@@ -20,7 +20,6 @@ import io.playfinity.sdk.core.device.SensorEventsSubscriber
 import io.playfinity.sdk.core.device.SensorRawDataSubscriber
 import io.playfinity.sdk.core.device.SensorType.Baseball
 import io.playfinity.sdk.utility.error.PFIThrowable
-import java.lang.Long.max
 
 @SuppressLint("SetTextI18n")
 class SmartBallActivity : PlayfinityActivity(),
@@ -30,8 +29,6 @@ class SmartBallActivity : PlayfinityActivity(),
         const val SUBSCRIBE_TO_RAW_DATA = false
     }
 
-    private var rawPacketsProcessed = 0L
-    private var rawPacketsTimestamp = 0L
     private var isScanningInitializing = false
     private var isScanningInProgress = false
     private var playfinitySDK: PlayfinitySDK? = null
@@ -113,15 +110,7 @@ class SmartBallActivity : PlayfinityActivity(),
     }
 
     override fun onSensorRawData(rawData: BluetoothDataRaw) {
-        var pps = 0L
-        if (rawPacketsProcessed == 0L) {
-            rawPacketsTimestamp = System.currentTimeMillis()
-        } else {
-            val timeDiff = max(1L, (System.currentTimeMillis() - rawPacketsTimestamp) / 1000L)
-            pps = rawPacketsProcessed / timeDiff
-        }
-
-        rawPacketsProcessed++
+        // If SUBSCRIBE_TO_RAW_DATA is enabled, then raw data will be available here.
     }
 
     private fun initializeSdk() {

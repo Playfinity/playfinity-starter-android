@@ -1,4 +1,4 @@
-package com.playfinity.recorder.utils
+package com.playfinity.starter.utils
 
 import java.util.UUID
 

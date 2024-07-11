@@ -29,7 +29,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.playfinity.recorder.application.RecorderApp"
+        android:name="com.playfinity.starter.application.StarterApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -37,7 +37,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.playfinity.recorder.presentation.MainActivity"
+            android:name="com.playfinity.starter.presentation.MainActivity"
             android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
@@ -48,13 +48,13 @@
         </activity>
 
         <activity
-            android:name="com.playfinity.recorder.presentation.SmartBallActivity"
+            android:name="com.playfinity.starter.presentation.SmartBallActivity"
             android:launchMode="singleInstance"
             android:exported="true">
         </activity>
 
         <activity
-            android:name="com.playfinity.recorder.presentation.FootballActivity"
+            android:name="com.playfinity.starter.presentation.FootballActivity"
             android:launchMode="singleInstance"
             android:exported="true">
         </activity>

@@ -1,11 +1,12 @@
-package com.playfinity.recorder.presentation.adapter
+package com.playfinity.starter.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.playfinity.recorder.R
+import com.playfinity.starter.R
 
 class EventLogAdapter(private val logList: MutableList<EventLogEntry>) :
     RecyclerView.Adapter<EventLogAdapter.ViewHolder>() {
@@ -23,13 +24,10 @@ class EventLogAdapter(private val logList: MutableList<EventLogEntry>) :
         return logList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun insertRow(row: EventLogEntry) {
         logList.add(row)
-        notifyDataSetChanged()
-    }
 
-    fun clear() {
-        logList.clear()
         notifyDataSetChanged()
     }
 

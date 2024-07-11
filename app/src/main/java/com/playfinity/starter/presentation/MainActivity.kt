@@ -1,10 +1,10 @@
-package com.playfinity.recorder.presentation
+package com.playfinity.starter.presentation
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.playfinity.recorder.R
+import com.playfinity.starter.R
 
 class MainActivity : AppCompatActivity() {
 
