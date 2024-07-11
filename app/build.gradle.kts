@@ -17,13 +17,6 @@ android {
             storePassword = "android"
             storeFile = rootProject.file("settings/keystore/debug.jks")
         }
-
-        create("release") {
-            keyAlias = "playfinity2018"
-            keyPassword = "playfinity2018"
-            storePassword = "playfinity2018"
-            storeFile = rootProject.file("settings/keystore/release.jks")
-        }
     }
 
     /**
