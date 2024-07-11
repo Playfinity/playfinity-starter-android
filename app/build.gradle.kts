@@ -87,10 +87,21 @@ android {
     /**
      * Specifies module namespace.
      */
-    namespace = "io.playfinity.sdk.sample"
+    namespace = "com.playfinity.recorder"
 }
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // For Smartball, we need to include Playfinity SDK with dependencies:
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 }

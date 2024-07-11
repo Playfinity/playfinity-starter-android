@@ -3,24 +3,4 @@
 build/
 
 /local.properties
-*.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/codeStyleSettings
-.idea/libraries
-.idea/misc.xml
-.DS_Store
-/captures
-.externalNativeBuild
-libs/
-app/src/main/java/pl/fdt/manufaktura/beacons/BeaconMessageReceiver.java___jb_tmp___
-.idea/codeStyleSettings.xml
-.idea/caches/build_file_checksums.ser
-.idea/encodings.xml
-.idea/modules.xml
-.idea/runConfigurations.xml
-.idea/vcs.xml
-.idea/codeStyles/codeStyleConfig.xml
-.idea/codeStyles/Project.xml
+.idea/
