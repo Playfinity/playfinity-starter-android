@@ -10,7 +10,7 @@
         android:id="@+id/top"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorHitPink"
+        android:background="@color/romantic"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/bottom"
@@ -24,7 +24,7 @@
             android:gravity="center"
             android:text="@string/type_football"
             android:textAllCaps="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:textSize="40sp" />
 
     </LinearLayout>
@@ -33,7 +33,7 @@
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorCoral"
+        android:background="@color/hitPink"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:text="@string/type_smartball"
             android:textAllCaps="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:textSize="40sp" />
 
     </LinearLayout>

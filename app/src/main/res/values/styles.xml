@@ -1,9 +1,9 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPlayfinity</item>
-        <item name="colorPrimaryDark">@color/colorCoral</item>
-        <item name="colorAccent">@color/colorRomantic</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/romantic</item>
+        <item name="colorPrimaryDark">@color/romantic</item>
+        <item name="colorAccent">@color/romantic</item>
     </style>
 
 </resources>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorWhite">#ffffff</color>
-    <color name="colorRomantic">#ffd7b5</color>
-    <color name="colorHitPink">#ffb38a</color>
-    <color name="colorCoral">#ff9248</color>
-    <color name="colorPlayfinity">#ff6700</color>
+    <color name="black">#121212</color>
+    <color name="white">#ffffff</color>
+    <color name="romantic">#ffd7b5</color>
+    <color name="hitPink">#ffb38a</color>
+    <color name="coral">#ff9248</color>
+    <color name="playfinity">#ff6700</color>
 
 </resources>

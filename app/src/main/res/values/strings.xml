@@ -2,4 +2,31 @@
     <string name="app_name">Playfinity Recorder</string>
     <string name="type_football">Football</string>
     <string name="type_smartball">Smartball</string>
+
+    <string name="common_no">No</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_not_available">N\/A</string>
+
+    <string name="label_sdk">Playfinity SDK</string>
+    <string name="label_sdk_connected">Status: Connected</string>
+    <string name="label_sdk_connecting">Status: Connecting…</string>
+    <string name="label_sdk_not_connected">Status: Not connected.</string>
+
+    <string name="label_sensor">Sensor</string>
+    <string name="label_sensor_name">Name: %1$s</string>
+    <string name="label_sensor_firmware">Firmware: %1$s</string>
+    <string name="label_sensor_id">Id: %1$s</string>
+
+    <string name="label_event">Event</string>
+    <string name="label_event_type">Type: %1$s</string>
+    <string name="label_event_params">Parameters: </string>
+
+    <string name="label_counter">Counter: %1$s</string>
+    <string name="counter_throws">%1$d throw\'s</string>
+    <string name="counter_jumps">%1$d jump\'s</string>
+    <string name="counter_kicks">%1$d kick\'s</string>
+
+    <string name="event_log">Event\'s log:</string>
+    <string name="empty_param">\-</string>
+
 </resources>

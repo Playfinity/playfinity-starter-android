@@ -5,12 +5,15 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.playfinity.recorder.R
+import com.playfinity.recorder.presentation.adapter.EventLogAdapter
+import com.playfinity.recorder.presentation.adapter.EventLogEntry
 import com.playfinity.recorder.utils.hasAllRequiredBlePermissionsAndServices
 import com.playfinity.recorder.utils.hasBluetoothPermission
 import com.playfinity.recorder.utils.hasLocationPermission
@@ -29,7 +32,6 @@ import io.playfinity.sdk.core.device.SensorEventsSubscriber
 import io.playfinity.sdk.core.device.SensorRawDataSubscriber
 import io.playfinity.sdk.core.device.SensorType.Baseball
 import io.playfinity.sdk.utility.error.PFIThrowable
-import io.playfinity.sdk.utility.extention.toHexString
 import java.lang.Long.max
 
 @SuppressLint("SetTextI18n")
@@ -37,8 +39,7 @@ class SmartBallActivity : AppCompatActivity(),
     PFICallback, DiscoverSensorListener, SensorEventsSubscriber, SensorRawDataSubscriber {
 
     private companion object {
-        private const val TAG = "SmartBallActivity"
-        const val CONNECTED_MODE = false
+        const val SUBSCRIBE_TO_RAW_DATA = false
     }
 
     private var rawPacketsProcessed = 0L
@@ -50,10 +51,9 @@ class SmartBallActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize UI.
         setContentView(R.layout.activity_smartball)
 
-        // Initialize Playfinity SDK.
+        setupLogAdapter()
         initializeSdk()
     }
 
@@ -70,46 +70,45 @@ class SmartBallActivity : AppCompatActivity(),
     override fun onPlayfinityReady(sdk: PlayfinitySDK) {
         this.playfinitySDK = sdk
 
-        findViewById<TextView>(R.id.connectionStatus).text = "Status: Connected"
+        findViewById<TextView>(R.id.sdkStatusView).text = "Status: Connected"
 
-        // Start scanning devices.
         startScanningWithPermissions()
-
-        // Testing sensor:
         observeSensors()
-
-        // Log the fact.
-        Log.d(TAG, "onPlayfinityReady() is called with $sdk")
     }
 
     override fun onPlayfinityError(pfiThrowable: PFIThrowable) {
-        findViewById<TextView>(R.id.connectionStatus).text = "Status: Error (${pfiThrowable.message})"
-
-        // Log an error.
-        Log.e(TAG, pfiThrowable.message, pfiThrowable)
+        findViewById<TextView>(R.id.sdkStatusView).text = "Status: Error (${pfiThrowable.message})"
     }
 
     override fun onSensorDiscovered(sensor: Sensor) {
-        findViewById<TextView>(R.id.sensorStatus).text = "SensorId: ${sensor.sensorId}"
+        findViewById<TextView>(R.id.sensorNameView).text = "Id: ${sensor.sensorId}"
+        findViewById<TextView>(R.id.sensorFirmwareView).text = "Firmware: ${sensor.firmwareVersion}"
+        findViewById<TextView>(R.id.sensorMacView).text = "MAC: ${sensor.macAddress}"
 
-        Log.d(TAG, "onSensorDiscovered() is called with ${sensor.sensorId}")
-
-        when (CONNECTED_MODE) {
+        when (SUBSCRIBE_TO_RAW_DATA) {
             true -> observeSensorRawData(sensor)
             else -> observeSensorEvents(sensor)
         }
     }
 
     override fun onSensorDiscoverError(pfiThrowable: PFIThrowable) {
-        Log.d(TAG, "onSensorDiscoverError() | Reason: ${pfiThrowable.cause?.localizedMessage}")
+        val message = pfiThrowable.cause?.localizedMessage
+        findViewById<TextView>(R.id.sensorNameView).text = "Error: $message"
+        findViewById<TextView>(R.id.sensorFirmwareView).text = "-"
+        findViewById<TextView>(R.id.sensorMacView).text = "-"
     }
 
     override fun onSensorEvent(event: SensorEvent) {
-        if (event.eventType != SensorEventType.Inair && event.eventType != SensorEventType.Jumping) {
-            findViewById<TextView>(R.id.sensorEventStatus).text = "Event: [${event.identifier}] ${event.eventType}"
-        }
+        if (event.eventType != SensorEventType.Inair
+            && event.eventType != SensorEventType.Jumping
+        ) {
+            eventLogAdapter.insertRow(buildLogRow(event))
 
-        Log.d(TAG, "onSensorEvent() $event")
+            val rv = findViewById<RecyclerView>(R.id.eventLogList)
+            rv.post {
+                rv.scrollToPosition(eventLogAdapter.itemCount - 1)
+            }
+        }
     }
 
     override fun onSensorRawData(rawData: BluetoothDataRaw) {
@@ -122,7 +121,6 @@ class SmartBallActivity : AppCompatActivity(),
         }
 
         rawPacketsProcessed++
-        Log.d(TAG, "onSensorRawData() ${rawData.data.toHexString()}, pps = $pps")
     }
 
     private fun initializeSdk() {
@@ -178,19 +176,16 @@ class SmartBallActivity : AppCompatActivity(),
 
         // Stop service if BLE scanning is not possible.
         if (!hasAllRequiredBlePermissionsAndServices()) {
-            Log.w(TAG, "Permissions not granted. Skipping BLE scanning.")
             return
         }
 
         // Skip scanning if SDK is not ready.
         if (playfinitySdk == null) {
-            Log.w(TAG, "Playfinity SDK not ready. Skipping BLE scanning.")
             return
         }
 
         // Skip scanning if it already started.
         if (isScanningInProgress || isScanningInitializing) {
-            Log.w(TAG, "Skipping BLE initialization because it's already scanning.")
             return
         }
 
@@ -199,10 +194,7 @@ class SmartBallActivity : AppCompatActivity(),
         playfinitySdk
             .getBluetoothManager()
             .startScanner(false)
-            .let {
-                Log.i(TAG, "Bluetooth LE scanner: STARTED")
-                isScanningInProgress = true
-            }
+            .let { isScanningInProgress = true }
     }
 
     private fun stopBleScanning() {
@@ -213,10 +205,7 @@ class SmartBallActivity : AppCompatActivity(),
         playfinitySdk
             .getBluetoothManager()
             .stopScanner()
-            .let {
-                Log.d(TAG, "Bluetooth LE scanner: STOPPED")
-                isScanningInProgress = false
-            }
+            .let { isScanningInProgress = false }
     }
 
     private fun observeSensors() {
@@ -237,5 +226,46 @@ class SmartBallActivity : AppCompatActivity(),
             unSubscribeRawData(this@SmartBallActivity)
             subscribeToRawData(this@SmartBallActivity)
         }
+    }
+
+    private val eventLogAdapter = EventLogAdapter(mutableListOf())
+
+    private fun setupLogAdapter() {
+        val rv = findViewById<RecyclerView>(R.id.eventLogList)
+
+        rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        rv.adapter = eventLogAdapter
+    }
+
+    private fun buildLogRow(event: SensorEvent): EventLogEntry {
+        val params = when (event.eventType) {
+            SensorEventType.Thrown -> {
+                "Speed ${event.speedKmh} km/h"
+            }
+
+            SensorEventType.Bounce,
+            SensorEventType.Caught,
+            SensorEventType.Miss -> {
+                "Height ${event.heightBallEvent} cm, Airtime ${event.airTimeMilliseconds} ms"
+            }
+
+            SensorEventType.Jump -> {
+                ""
+            }
+
+            SensorEventType.Land -> {
+                "Rotation ${event.yawRotation}\u00B0, Pitch ${event.pitchRotation}\u00B0"
+            }
+
+            SensorEventType.Kick -> {
+                "Speed ${event.speedKmh} km/h"
+            }
+
+            else -> {
+                ""
+            }
+        }
+
+        return EventLogEntry(event.eventType.name, params)
     }
 }
