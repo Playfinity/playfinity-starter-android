@@ -21,12 +21,14 @@ class MainActivity : AppCompatActivity() {
             .setOnClickListener {
                 val intent = Intent(this, FootballActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
         findViewById<LinearLayout>(R.id.bottom)
             .setOnClickListener {
                 val intent = Intent(this, SmartBallActivity::class.java)
                 startActivity(intent)
+                finish()
             }
     }
 }

@@ -1,25 +1,13 @@
 package com.playfinity.recorder.presentation
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.os.Build
-import android.os.Build.VERSION
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.playfinity.recorder.R
 import com.playfinity.recorder.presentation.adapter.EventLogAdapter
 import com.playfinity.recorder.presentation.adapter.EventLogEntry
-import com.playfinity.recorder.utils.hasAllRequiredBlePermissionsAndServices
-import com.playfinity.recorder.utils.hasBluetoothPermission
-import com.playfinity.recorder.utils.hasLocationPermission
-import com.playfinity.recorder.utils.isBluetoothEnabled
-import com.playfinity.recorder.utils.isLocationEnabled
-import com.playfinity.recorder.utils.isLocationRequired
 import io.playfinity.sdk.PFICallback
 import io.playfinity.sdk.PlayfinitySDK
 import io.playfinity.sdk.PlayfinitySDKBuilder
@@ -35,7 +23,7 @@ import io.playfinity.sdk.utility.error.PFIThrowable
 import java.lang.Long.max
 
 @SuppressLint("SetTextI18n")
-class SmartBallActivity : AppCompatActivity(),
+class SmartBallActivity : PlayfinityActivity(),
     PFICallback, DiscoverSensorListener, SensorEventsSubscriber, SensorRawDataSubscriber {
 
     private companion object {
@@ -59,7 +47,7 @@ class SmartBallActivity : AppCompatActivity(),
 
     override fun onResume() {
         super.onResume()
-        startScanningWithPermissions()
+        checkPermissionsAndServices()
     }
 
     override fun onStop() {
@@ -67,12 +55,30 @@ class SmartBallActivity : AppCompatActivity(),
         stopBleScanning()
     }
 
+    override fun onReadyToScan() {
+
+        // Skip scanning if SDK is not ready.
+        val playfinitySdk = playfinitySDK ?: return
+
+        // Skip scanning if it already started.
+        if (isScanningInProgress || isScanningInitializing) {
+            return
+        }
+
+        isScanningInitializing = true
+
+        playfinitySdk
+            .getBluetoothManager()
+            .startScanner(false)
+            .let { isScanningInProgress = true }
+    }
+
     override fun onPlayfinityReady(sdk: PlayfinitySDK) {
         this.playfinitySDK = sdk
 
         findViewById<TextView>(R.id.sdkStatusView).text = "Status: Connected"
 
-        startScanningWithPermissions()
+        checkPermissionsAndServices()
         observeSensors()
     }
 
@@ -81,9 +87,9 @@ class SmartBallActivity : AppCompatActivity(),
     }
 
     override fun onSensorDiscovered(sensor: Sensor) {
-        findViewById<TextView>(R.id.sensorNameView).text = "Id: ${sensor.sensorId}"
+        findViewById<TextView>(R.id.sensorNameView).text = "MAC: ${sensor.macAddress}"
         findViewById<TextView>(R.id.sensorFirmwareView).text = "Firmware: ${sensor.firmwareVersion}"
-        findViewById<TextView>(R.id.sensorMacView).text = "MAC: ${sensor.macAddress}"
+        findViewById<TextView>(R.id.sensorMacView).text = "Mode: ${sensor.sensorType}"
 
         when (SUBSCRIBE_TO_RAW_DATA) {
             true -> observeSensorRawData(sensor)
@@ -131,72 +137,6 @@ class SmartBallActivity : AppCompatActivity(),
             .build(application, Baseball)
     }
 
-    private fun startScanningWithPermissions() {
-        when {
-            !isBluetoothEnabled() -> {
-                Toast.makeText(this, "Enable Bluetooth", Toast.LENGTH_LONG).show()
-            }
-
-            isLocationRequired() && !isLocationEnabled() -> {
-                Toast.makeText(this, "Enable GPS", Toast.LENGTH_LONG).show()
-            }
-
-            !hasLocationPermission() -> {
-                when {
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && VERSION.SDK_INT <= Build.VERSION_CODES.P -> {
-                        requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    }
-
-                    Build.VERSION.SDK_INT > Build.VERSION_CODES.P && VERSION.SDK_INT < Build.VERSION_CODES.S -> {
-                        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                    }
-
-                    else -> {}
-                }
-                Toast.makeText(this, "Grant Location permissions", Toast.LENGTH_LONG).show()
-            }
-
-            !hasBluetoothPermission() -> {
-                Toast.makeText(this, "Grant Bluetooth permissions", Toast.LENGTH_LONG).show()
-            }
-
-            else -> attemptBleScanning()
-        }
-    }
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                startScanningWithPermissions()
-            }
-        }
-
-    private fun attemptBleScanning() {
-        val playfinitySdk = playfinitySDK
-
-        // Stop service if BLE scanning is not possible.
-        if (!hasAllRequiredBlePermissionsAndServices()) {
-            return
-        }
-
-        // Skip scanning if SDK is not ready.
-        if (playfinitySdk == null) {
-            return
-        }
-
-        // Skip scanning if it already started.
-        if (isScanningInProgress || isScanningInitializing) {
-            return
-        }
-
-        isScanningInitializing = true
-
-        playfinitySdk
-            .getBluetoothManager()
-            .startScanner(false)
-            .let { isScanningInProgress = true }
-    }
-
     private fun stopBleScanning() {
         val playfinitySdk = playfinitySDK ?: return
 
@@ -237,35 +177,6 @@ class SmartBallActivity : AppCompatActivity(),
         rv.adapter = eventLogAdapter
     }
 
-    private fun buildLogRow(event: SensorEvent): EventLogEntry {
-        val params = when (event.eventType) {
-            SensorEventType.Thrown -> {
-                "Speed ${event.speedKmh} km/h"
-            }
-
-            SensorEventType.Bounce,
-            SensorEventType.Caught,
-            SensorEventType.Miss -> {
-                "Height ${event.heightBallEvent} cm, Airtime ${event.airTimeMilliseconds} ms"
-            }
-
-            SensorEventType.Jump -> {
-                ""
-            }
-
-            SensorEventType.Land -> {
-                "Rotation ${event.yawRotation}\u00B0, Pitch ${event.pitchRotation}\u00B0"
-            }
-
-            SensorEventType.Kick -> {
-                "Speed ${event.speedKmh} km/h"
-            }
-
-            else -> {
-                ""
-            }
-        }
-
-        return EventLogEntry(event.eventType.name, params)
-    }
+    private fun buildLogRow(event: SensorEvent): EventLogEntry =
+        EventLogEntry(event.eventType.name, event.toString())
 }
